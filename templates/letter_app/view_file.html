@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="text-center" style="margin-top: 20px;">
+    <h2>{{ file.title }}</h2>
+  
+    <p>Uploaded by: {{ file.uploaded_by.username }}</p>
+    <p>Upload Date: {{ file.upload_date }}</p>
+  
+    <p><a href="{{ file.file.url }}" class="btn btn-primary" target="_blank">ファイルを開く</a></p>
+  
+    <a href="{% url 'letter_app:letter_list' %}" class="btn btn-secondary">戻る</a>
+  </div>
+{% endblock %}

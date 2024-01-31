@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center">
+    <form method="POST" class="border border-primary p-4 rounded bg-light">
+        {% csrf_token %}
+        {{ registration_form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block mt-3">ユーザー登録</button>
+    </form>
+</div>
+{% endblock %}

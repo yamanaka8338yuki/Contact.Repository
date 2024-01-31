@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="text-center" style="margin-top: 20vh;">
+    <h2>ファイルアップロードページ</h2>
+    
+    <form method="post" enctype="multipart/form-data" action="{% url 'letter_app:upload_file' %}">
+      {% csrf_token %}
+      <div style="width: 50%; margin: 0 auto;"> 
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">アップロード</button> 
+      </div>
+    </form>
+    
+    <a href="{% url 'letter_app:letter_list' %}" class="btn btn-secondary" style="margin-top: 20px;">キャンセル</a> 
+  </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <div>{{ message.message }}</div>
+    {% endfor %}
+  {% endif %}
+  <div style="text-align: center;">
+    <h2>Board List</h2>
+    <div class="text-start"> 
+      <p><a class="btn btn-primary" href="{% url 'board_app:create_topic' %}">新しいボードをつくる</a></p>
+    </div>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Title</th>
+        <th>Author</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topic in topics %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><a href="{% url 'board_app:post_texts' topic_id=topic.id %}">{{ topic.title }}</a></td>
+          <td>
+            {% if topic.user == request.user %}
+              <a href="{% url 'board_app:edit_topic' id=topic.id %}">{{ topic.user.username }}</a>
+            {% else %}
+              {{ topic.user.username }}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+

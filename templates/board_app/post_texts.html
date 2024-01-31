@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align: center; margin-top: 20px;">
+  <h2>{{ topic.title }}</h2>
+
+  <div class="col-6 offset-3" style="margin-top: 20px;">
+    <form method="POST" style="display: inline-block;">
+      {% csrf_token %}
+      {{ post_text_form.as_p }}
+      <input type="submit" class="btn btn-primary" value="メッセージを送る">
+    </form>
+    <a href="{% url 'board_app:list_topics' %}" class="btn btn-secondary" style="margin-left: 10px;">戻る</a>
+  </div>
+
+  {% for text in texts reversed %}
+  <div class="col-10 offset-1">
+    {% if text.user.picture %}
+      <img style="float: left; margin-right: 10px;" width="50px" height="50px" src="{{ text.user.picture.url }}">
+    {% endif %}
+    <p>User name: {{ text.user.username }}</p>
+    <p>{{ text.text | linebreaks }}</p>
+    <hr>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

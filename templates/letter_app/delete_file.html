@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="text-center" style="margin-top: 20vh;"> <!-- 上部マージンを変更 -->
+    <h2>本当に以下のファイルを削除しますか？</h2>
+    
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Title</th>
+          <th>Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ file.id }}</td>
+          <td>{{ file.title }}</td>
+          <td>{{ file.uploaded_by.username }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form method="POST" action="{% url 'letter_app:delete_file' file.id %}">
+      {% csrf_token %}
+      <div style="margin-top: 20px;"> <!-- ボタン上部のマージンを追加 -->
+        <button type="submit" class="btn btn-danger">削除</button>
+        <a href="{% url 'letter_app:letter_list' %}" class="btn btn-secondary">キャンセル</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+

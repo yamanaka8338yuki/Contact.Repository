@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center" style="margin-top: 300px;">
+    {% if messages %} 
+      {% for message in messages %}
+        <div>{{ message.message }}</div>
+      {% endfor %}
+    {% endif %}
+    <h2>ContactBookへようこそ</h2>
+</div>
+{% endblock %}

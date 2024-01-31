@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-center" style="margin-top: 250px;"> <!-- 中央寄せと上方への余白 -->
+    <h2>本当に削除しますか？</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ delete_topic_form.as_p }}
+      <button type="submit" class="btn btn-danger">削除</button> <!-- スタイリッシュなボタン -->
+    </form>
+  </div>
+{% endblock %}

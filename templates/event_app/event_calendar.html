@@ -1,0 +1,48 @@
+<!-- event_calendar.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Event Calendar</h2>
+  <a href="{% url 'event_app:add_event' %}">Add Event</a>
+
+  <div id="calendar-container">
+    <div id="calendar"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales-all.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.css" integrity="sha384-..." crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/daygrid/main.css" integrity="sha384-..." crossorigin="anonymous">
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+  
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: {
+            url: '/api/events/',
+            method: 'GET',
+            extraParams: {
+                csrfmiddlewaretoken: '{{ csrf_token }}', 
+            },
+            success: function(events) {
+                events.forEach(function(event) {
+                    event.url = '/event/' + event.id + '/';
+                });
+            },
+        },
+        eventClick: function(info) {
+            window.location.href = info.event.url;
+        }
+      });
+  
+      calendar.render();
+    });
+  </script>
+{% endblock %}

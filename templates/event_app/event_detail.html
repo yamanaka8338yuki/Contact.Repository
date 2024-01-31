@@ -1,0 +1,13 @@
+<!-- templates/event_app/event_detail.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ event.event_title }}</h2>
+  <p><strong>Date:</strong> {{ event.event_init_date }} - {{ event.event_last_date }}</p>
+  <p><strong>Place:</strong> {{ event.event_place }}</p>
+  <p><strong>Details:</strong> {{ event.comments }}</p>
+  <p><strong>Created At:</strong> {{ event.created_at }}</p>
+  <p><strong>Updated At:</strong> {{ event.updated_at }}</p>
+  <a href="{% url 'event_app:event_calendar' %}">Back to Calendar</a>
+{% endblock %}

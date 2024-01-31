@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-center" style="margin-top: 250px;">
+    <h2>ボード編集ページ</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ edit_topic_form.as_p }}
+      <button type="submit" class="btn btn-primary" style="margin-right: 10px;">タイトルを更新する</button> 
+      <a class="btn btn-danger" href="{% url 'board_app:delete_topic' id=id %}">ボードを削除する</a> 
+      <a class="btn btn-secondary" href="{% url 'board_app:list_topics' %}">戻る</a>
+    </form>
+  </div>
+{% endblock %}
