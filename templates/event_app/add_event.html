@@ -1,22 +1,23 @@
-<!-- add_event.html -->
-
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Add Event</h2>
-  <form method="post" action="{% url 'event_app:add_event' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Event</button>
-  </form>
+  <div style="text-align: center;">
+    <h2>イベント作成ページ</h2>
+    <form method="post" action="{% url 'event_app:add_event' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div>
+        <button type="submit" class="btn btn-success">作成</button> {# ② 作成ボタンを緑のスタイリッシュなボタンに #}
+        <a href="{% url 'event_app:event_calendar' %}" class="btn btn-secondary">戻る</a> {# ③ 戻るボタンをグレーのスタイリッシュなボタンに #}
+      </div>
+    </form>
 
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-  <a href="{% url 'event_app:event_calendar' %}">Back to Calendar</a>
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
 {% endblock %}

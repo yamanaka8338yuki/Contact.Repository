@@ -11,3 +11,10 @@ class EventForm(forms.ModelForm):
             'event_init_date': forms.DateInput(attrs={'type': 'date'}),
             'event_last_date': forms.DateInput(attrs={'type': 'date'}),
         }
+        labels = {
+            'event_title': 'タイトル',
+            'event_init_date': '開始日',
+            'event_last_date': '終了日',
+            'event_place': '場所',
+            'comments': 'コメント',
+        }

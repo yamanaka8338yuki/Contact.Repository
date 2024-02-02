@@ -1,13 +1,23 @@
-<!-- templates/event_app/event_detail.html -->
-
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>{{ event.event_title }}</h2>
-  <p><strong>Date:</strong> {{ event.event_init_date }} - {{ event.event_last_date }}</p>
-  <p><strong>Place:</strong> {{ event.event_place }}</p>
-  <p><strong>Details:</strong> {{ event.comments }}</p>
-  <p><strong>Created At:</strong> {{ event.created_at }}</p>
-  <p><strong>Updated At:</strong> {{ event.updated_at }}</p>
-  <a href="{% url 'event_app:event_calendar' %}">Back to Calendar</a>
+  <div style="text-align: center; display: flex; flex-direction: column; align-items: center;"> 
+    <h1 style="font-size: 1.5em;">{{ event.event_title }}</h1> 
+    <p><strong>イベントID:</strong> {{ event.event_id }}</p>
+    <p><strong>開始日:</strong> {{ event.event_init_date }}</p>
+    <p><strong>終了日:</strong> {{ event.event_last_date }}</p>
+    <p><strong>場所:</strong> {{ event.event_place }}</p>
+    <p><strong>コメント:</strong> {{ event.comments }}</p>
+
+    <div style="display: flex; gap: 10px; margin-top: 10px;"> {# ボタンを横一列に配置 #}
+      <a href="{% url 'event_app:edit_event' event_id=event.event_id %}" class="btn btn-success">編集</a> 
+      
+      <form method="post" action="{% url 'event_app:delete_event' event_id=event.event_id %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" onclick="return confirm('このイベントを削除してもよろしいですか？')">削除</button>
+      </form>
+
+      <a href="{% url 'event_app:event_calendar' %}" class="btn btn-secondary">戻る</a> 
+    </div>
+  </div>
 {% endblock %}

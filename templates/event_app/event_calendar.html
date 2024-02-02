@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Event Calendar</h2>
-  <a href="{% url 'event_app:add_event' %}">Add Event</a>
+  <div style="text-align: center;">
+    <h2>Event Clendar</h2>
+  </div>
+  
+  <div>
+    <a href="{% url 'event_app:add_event' %}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-right: auto; margin-left: 0;">イベントを追加する</a>
+  </div>
 
   <div id="calendar-container">
     <div id="calendar"></div>
