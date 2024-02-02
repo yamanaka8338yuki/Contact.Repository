@@ -1,7 +1,4 @@
-<!-- event_calendar.html -->
-
 {% extends 'base.html' %}
-
 {% block content %}
   <h2>Event Calendar</h2>
   <a href="{% url 'event_app:add_event' %}">Add Event</a>
@@ -26,14 +23,14 @@
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         events: {
-            url: '/api/events/',
+            url: '/event_app/api/events/',
             method: 'GET',
             extraParams: {
                 csrfmiddlewaretoken: '{{ csrf_token }}', 
             },
             success: function(events) {
                 events.forEach(function(event) {
-                    event.url = '/event/' + event.id + '/';
+                    event.url = '/event_app/event/?id=' + event.event_id + '/';
                 });
             },
         },

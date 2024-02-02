@@ -4,6 +4,7 @@ from django.db import models
 from django.urls import reverse
 
 class Event(models.Model):
+    event_id = models.AutoField(primary_key=True, default='')
     event_init_date = models.DateField()
     event_last_date = models.DateField()
     event_title = models.CharField(max_length=200)

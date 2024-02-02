@@ -30,6 +30,7 @@ def api_events(request):
     event_list = []
     for event in events:
         event_list.append({
+            'id' : event.event_id,
             'title': event.event_title,
             'start': event.event_init_date.isoformat(),
             'end': event.event_last_date.isoformat(),
