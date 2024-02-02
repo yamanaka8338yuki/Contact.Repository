@@ -30,7 +30,7 @@
             },
             success: function(events) {
                 events.forEach(function(event) {
-                    event.url = '/event_app/event/?id=' + event.event_id + '/';
+                    event.url = '/event_app/event/' + event.id + '/';
                 });
             },
         },
