@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
 from django.core.exceptions import ValidationError
-from .models import UserActiveTokens
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -26,13 +25,9 @@ def registration(request):
     }
   )
 
-def active_user(request, token):
-   user_active_token = UserActiveTokens.objects.active_user_using_token(token) 
-   return render(
-    request, 'contactbook_app/active_user.html'
-  )
 
-def login_page(request): # 以下追記箇所
+
+def login_page(request): 
   login_form = forms.LoginForm(request.POST or None)
   if login_form.is_valid():
     email = login_form.cleaned_data.get('email')
@@ -46,7 +41,7 @@ def login_page(request): # 以下追記箇所
       else:
         messages.warning(request, 'ユーザーが無効です')
     else:
-      messages.warning(request, 'ユーザーまたはパスワードが間違っています')
+      messages.warning(request, 'メールアドレスまたはパスワードが間違っています')
   return render(
     request, 'contactbook_app/login_page.html', context={
       'login_form':login_form,

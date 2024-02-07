@@ -6,7 +6,6 @@ app_name = 'contactbook_app'
 urlpatterns = [
   path('', views.home, name='home'),
   path('registration', views.registration, name='registration'),
-  path('active_user/<uuid:token>', views.active_user, name='active_user'),
   path('login_page', views.login_page, name='login_page'), 
   path('logout_page', views.logout_page, name='logout_page'),
   path('edit_page', views.edit_page, name='edit_page'), 
