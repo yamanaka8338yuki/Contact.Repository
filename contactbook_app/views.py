@@ -16,6 +16,7 @@ def registration(request):
   if registration_form.is_valid():
     try:
       registration_form.save()
+      messages.success(request, '正常に登録が完了しました。ログインをお願いします。')
       return redirect('contactbook_app:home')
     except ValidationError as e:
       registration_form.add_error('password', e) 
