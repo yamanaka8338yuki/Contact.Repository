@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
+from .forms import RegistrationForm, LoginForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib import messages
@@ -12,20 +13,17 @@ def home(request):
   )
 
 def registration(request):
-  registration_form = forms.RegistrationForm(request.POST or None)
-  if registration_form.is_valid():
-    try:
-      registration_form.save()
-      messages.success(request, '正常に登録が完了しました。ログインをお願いします。')
-      return redirect('contactbook_app:home')
-    except ValidationError as e:
-      registration_form.add_error('password', e) 
-  return render(
-    request, 'contactbook_app/registration.html', context={
-      'registration_form':registration_form,
-    }
-  )
-
+    registration_form = RegistrationForm(request.POST or None)
+    if registration_form.is_valid():
+        try:
+            registration_form.save()
+            messages.success(request, '正常に登録が完了しました。ログインをお願いします。')
+            return redirect('contactbook_app:home')
+        except ValidationError as e:
+            registration_form.add_error('email', e)  # エラーメッセージをemailフィールドに追加
+    return render(request, 'contactbook_app/registration.html', context={
+        'registration_form': registration_form,
+    })
 
 
 def login_page(request): 

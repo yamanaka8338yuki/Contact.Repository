@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import User
 from django.contrib.auth.password_validation import validate_password
 
@@ -13,6 +14,13 @@ class RegistrationForm(forms.ModelForm):
   class Meta():
     model = User
     fields = ('username', 'phone_number', 'home_address', 'email', 'password')
+
+  def clean_email(self):
+    email = self.cleaned_data.get('email')
+    if User.objects.filter(email=email).exists():
+      raise ValidationError('同じメールアドレスの登録があります。')
+    return email
+
 
   def clean(self):
     cleaned_data = super().clean()
