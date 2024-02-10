@@ -53,6 +53,12 @@
             {{ registration_form.reenter_password }}
         </div>
 
+        <!-- ユーザータイプの選択フォームを追加 -->
+        <div class="form-group mb-3">
+            {{ registration_form.auth.label_tag }}
+            {{ registration_form.auth }}
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block mt-3">ユーザー登録</button>
     </form>
 </div>

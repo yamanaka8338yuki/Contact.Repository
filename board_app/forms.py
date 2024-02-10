@@ -27,5 +27,3 @@ class PostTextForm(forms.ModelForm):
     model = Texts
     fields = ('text',)
 
-class PasswordForm(forms.Form):
-    password = forms.CharField(label='ボード作成者のパスワードを入力してください。', widget=forms.PasswordInput)

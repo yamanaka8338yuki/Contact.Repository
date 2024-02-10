@@ -20,54 +20,61 @@ def create_topic(request):
     }
   )
 
-def list_topics(request): 
-  topics = Topics.objects.pick_all_topics()
-  return render(
-    request, 'board_app/list_topics.html', context={
-      'topics': topics
-    }
-  )
+def list_topics(request):
+    if request.user.auth == 'admin':
+        # 特権ユーザー（保育士）の場合は全てのボードを表示
+        topics = Topics.objects.pick_all_topics()
+    else:
+        # 一般ユーザー（保護者）の場合は自分が作成したボードのみ表示
+        topics = Topics.objects.filter(user=request.user)
+
+    return render(
+        request, 'board_app/list_topics.html', context={
+            'topics': topics
+        }
+    )
 
 def edit_topic(request, id): 
-  topic = get_object_or_404(Topics, id=id)
-  if topic.user.id != request.user.id:
-    raise Http404
-  edit_topic_form = forms.CreateTopicForm(request.POST or None, instance=topic)
-  if edit_topic_form.is_valid():
-    edit_topic_form.save()
-    messages.success(request, 'ボードが更新されました')
-    return redirect('board_app:list_topics')
-  return render(
-    request, 'board_app/edit_topic.html', context={
-      'edit_topic_form': edit_topic_form,
-      'id': id,
-    }
-  )
+    topic = get_object_or_404(Topics, id=id)
+
+    # 特権ユーザー（admin）はどのボードでも編集可能
+    if request.user.auth != 'admin' and topic.user.id != request.user.id:
+        raise Http404
+
+    edit_topic_form = forms.CreateTopicForm(request.POST or None, instance=topic)
+    if edit_topic_form.is_valid():
+        edit_topic_form.save()
+        messages.success(request, 'ボードが更新されました')
+        return redirect('board_app:list_topics')
+
+    return render(
+        request, 'board_app/edit_topic.html', context={
+            'edit_topic_form': edit_topic_form,
+            'id': id,
+        }
+    )
 
 def delete_topic(request, id): 
-  topic = get_object_or_404(Topics, id=id)
-  if topic.user.id != request.user.id:
-    raise Http404
-  delete_topic_form = forms.DeleteTopicForm(request.POST or None)
-  if delete_topic_form.is_valid():
-    topic.delete()
-    messages.success(request, 'ボードが削除されました')
-    return redirect('board_app:list_topics')
-  return render(
-    request, 'board_app/delete_topic.html', context={
-      'delete_topic_form': delete_topic_form
-    }
-  )
+    topic = get_object_or_404(Topics, id=id)
+
+    # 特権ユーザー（admin）はどのボードでも削除可能
+    if request.user.auth != 'admin' and topic.user.id != request.user.id:
+        raise Http404
+
+    delete_topic_form = forms.DeleteTopicForm(request.POST or None)
+    if delete_topic_form.is_valid():
+        topic.delete()
+        messages.success(request, 'ボードが削除されました')
+        return redirect('board_app:list_topics')
+
+    return render(
+        request, 'board_app/delete_topic.html', context={
+            'delete_topic_form': delete_topic_form
+        }
+    )
 
 @login_required
 def post_texts(request, topic_id):
-    # 認証済みの情報を取得
-    auth_topic_id = request.session.get('board_auth_topic_id')
-
-    if auth_topic_id != topic_id:
-        # 認証されていない場合はログインパスワード画面にリダイレクト
-        return redirect('board_app:password_required', topic_id=topic_id)
-
     post_text_form = forms.PostTextForm(request.POST or None)
     topic = get_object_or_404(Topics, id=topic_id)
     texts = Texts.objects.pick_by_topic_id(topic_id)
@@ -86,27 +93,3 @@ def post_texts(request, topic_id):
         }
     )
 
-
-@login_required
-def password_required(request, topic_id):
-    topic = get_object_or_404(Topics, id=topic_id)
-
-    if request.method == 'POST':
-        password_form = forms.PasswordForm(request.POST)
-
-        if password_form.is_valid() and topic.user.check_password(password_form.cleaned_data['password']):
-            # パスワードが認証されたらセッションに認証済みの情報を保存
-            request.session['board_auth_topic_id'] = topic.id
-            return redirect('board_app:post_texts', topic_id=topic_id)
-        else:
-            messages.error(request, 'パスワードが間違っています')
-
-    else:
-        password_form = forms.PasswordForm()
-
-    return render(
-        request, 'board_app/password_required.html', context={
-            'password_form': password_form,
-            'topic': topic,
-        }
-    )

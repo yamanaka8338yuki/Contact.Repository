@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+import board_app
+from board_app.apps import BoardAppConfig
 from . import forms
 from .forms import RegistrationForm, LoginForm
 from django.core.exceptions import ValidationError
@@ -16,11 +18,13 @@ def registration(request):
     registration_form = RegistrationForm(request.POST or None)
     if registration_form.is_valid():
         try:
-            registration_form.save()
-            messages.success(request, '正常に登録が完了しました。ログインをお願いします。')
+            user = registration_form.save(commit=False)
+            user.set_password(registration_form.cleaned_data['password'])
+            user.save()
+            messages.success(request, '正常に登録が完了しました。ログインしてください。')
             return redirect('contactbook_app:home')
         except ValidationError as e:
-            registration_form.add_error('email', e)  # エラーメッセージをemailフィールドに追加
+            registration_form.add_error('email', e)
     return render(request, 'contactbook_app/registration.html', context={
         'registration_form': registration_form,
     })

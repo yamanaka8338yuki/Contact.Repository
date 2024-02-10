@@ -25,15 +25,10 @@
           <td>{{ forloop.counter }}</td>
           <td><a href="{% url 'board_app:post_texts' topic_id=topic.id %}">{{ topic.title }}</a></td>
           <td>
-            {% if topic.user == request.user %}
-              <a href="{% url 'board_app:edit_topic' id=topic.id %}">{{ topic.user.username }}</a>
-            {% else %}
-              {{ topic.user.username }}
-            {% endif %}
+            <a href="{% url 'board_app:edit_topic' id=topic.id %}">{{ topic.user.username }}</a>
           </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 {% endblock %}
-

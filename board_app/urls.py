@@ -9,5 +9,4 @@ urlpatterns = [
   path('edit_topic/<int:id>', views.edit_topic, name='edit_topic'),
   path('delete_topic/<int:id>', views.delete_topic, name='delete_topic'),
   path('post_texts/<int:topic_id>', views.post_texts, name='post_texts'),
-  path('password_required/<int:topic_id>/', views.password_required, name='password_required'),
 ]

@@ -19,6 +19,13 @@ class User(AbstractBaseUser, PermissionsMixin):
   phone_number = models.CharField(max_length=15, blank=True, null=True)
   home_address = models.CharField(max_length=100, blank=True, null=True)
 
+  AUTH_CHOICES = [
+        ('general', '保護者ユーザー'),
+        ('admin', '保育士ユーザー'),
+  ]
+  auth = models.CharField(max_length=10, choices=AUTH_CHOICES, default='general')
+
+
   objects = UserManager()
 
   USERNAME_FIELD = 'email'

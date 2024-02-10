@@ -10,10 +10,11 @@ class RegistrationForm(forms.ModelForm):
   email = forms.EmailField(label='メールアドレス')
   password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
   reenter_password = forms.CharField(label='パスワード（確認用）', widget=forms.PasswordInput())
+  auth = forms.ChoiceField(choices=User.AUTH_CHOICES, label='ユーザータイプ')
 
   class Meta():
     model = User
-    fields = ('username', 'phone_number', 'home_address', 'email', 'password')
+    fields = ('username', 'phone_number', 'home_address', 'email', 'password', 'auth')
 
   def clean_email(self):
     email = self.cleaned_data.get('email')
@@ -45,10 +46,11 @@ class UserEditForm(forms.ModelForm):
   phone_number = forms.CharField(max_length=15, label='電話番号', required=False)
   home_address = forms.CharField(max_length=100, label='住所', required=False)
   email = forms.EmailField(label='メールアドレス')
+  auth = forms.ChoiceField(choices=User.AUTH_CHOICES, label='ユーザータイプ')
 
   class Meta:
     model = User
-    fields = ('username', 'phone_number', 'home_address', 'email')
+    fields = ('username', 'phone_number', 'home_address', 'email', 'auth')
 
 class ChangePasswordForm(forms.ModelForm): 
     
